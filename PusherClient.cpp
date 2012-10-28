@@ -46,6 +46,7 @@ prog_char unsubscribeMessage[] PROGMEM = "{\"channel\": \"{0}\" }";
 prog_char triggerEventMessage[] PROGMEM = "{\"event\": \"{0}\", \"data\": {1} }";
 prog_char eventNameStart[] PROGMEM = "event";
 prog_char unsubscribeEventName[] PROGMEM = "pusher:unsubscribe";
+prog_char dataStart[] PROGMEM = "data";
 
 
 PROGMEM const char *stringTable[] =
@@ -62,7 +63,8 @@ PROGMEM const char *stringTable[] =
     unsubscribeMessage,
     triggerEventMessage,
     eventNameStart,
-    unsubscribeEventName
+    unsubscribeEventName,
+    dataStart
 };
 
 String PusherClient::getStringTableItem(int index) {
@@ -156,8 +158,8 @@ void PusherClient::triggerEvent(String eventName, String eventData) {
     _client.send(message);
 }
 
-
 void PusherClient::dataArrived(WebSocketClient client, String data) {
+    Serial.println(data);
     String eventNameStart = getStringTableItem(11);
     String eventName = parseMessageMember(eventNameStart, data);
     
@@ -167,7 +169,9 @@ void PusherClient::dataArrived(WebSocketClient client, String data) {
     
     EventDelegate delegate = _bindMap[eventName];
     if (delegate != NULL) {
-        delegate(data);
+        String dataStart = getStringTableItem(13);
+        String payload = parseMessageMember(dataStart, data);
+        delegate(payload);
     }
 }
 
