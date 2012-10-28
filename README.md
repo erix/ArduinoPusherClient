@@ -64,6 +64,8 @@ void handleMyEvent(String data) {
 }
 ```
 
+For subsequent authentication it is possible to obtain the `socket_id` by binding to the `pusher:connection_established` event. Then the `socket_id` can be used for authentication locally, e.g. using an Sha256 library or remotly by passing the `socket_id` and `channel_name` to an authentication server. Read more in the [Authentication Signatures](http://pusher.com/docs/auth_signatures) documentation.
+
 
 ### Binding to all Events
 
