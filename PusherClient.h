@@ -50,6 +50,7 @@ class PusherClient {
         void subscribe(String channel, String auth);
         void subscribe(String channel, String auth, String userId);
         void triggerEvent(String eventName, String eventData);
+        void triggerEvent(String eventName, String eventData, String channel);
         void unsubscribe(String channel);
         static String parseMessageMember(String memberName, String data);
     private:
